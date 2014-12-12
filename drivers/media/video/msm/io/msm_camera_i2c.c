@@ -78,8 +78,8 @@ int32_t msm_camera_i2c_txdata(struct msm_camera_i2c_client *dev_client,
 	if (rc < 0)
 		S_I2C_DBG("msm_camera_i2c_txdata faild 0x%x\n", saddr);
 #ifdef CONFIG_PANTECH_CAMERA
-	else
-		rc = 0;
+        else
+            rc = 0;
 	return rc;
 #else
 	return 0;
@@ -459,22 +459,23 @@ int32_t msm_camera_i2c_write_tbl(struct msm_camera_i2c_client *client,
 					reg_conf_tbl->reg_addr,
 					reg_conf_tbl->reg_data,
 					reg_conf_tbl->dt);
-			}
+		}
 #ifdef CONFIG_PANTECH_CAMERA_AS0260
-			} else if (reg_conf_tbl->cmd_type == MSM_CAMERA_I2C_CMD_MCU) {
-				rc = msm_camera_i2c_mcu(client, reg_conf_tbl->reg_addr,
-					reg_conf_tbl->reg_data, reg_conf_tbl->dt);
-			} else if (reg_conf_tbl->cmd_type == MSM_CAMERA_I2C_CMD_TRIM) {
-				rc = msm_camera_i2c_read(client, reg_conf_tbl->reg_addr, &reg_conf_tbl->reg_data, reg_conf_tbl->dt);
-				if(rc<0)
-					break;
-				reg_conf_tbl->reg_data +=2;
-				if(reg_conf_tbl->reg_data >7)
-					reg_conf_tbl->reg_data = 7;
-				rc = msm_camera_i2c_write(client, reg_conf_tbl->reg_addr, reg_conf_tbl->reg_data, reg_conf_tbl->dt);
-			}
+		else if (reg_conf_tbl->cmd_type == MSM_CAMERA_I2C_CMD_MCU) {
+			rc = msm_camera_i2c_mcu(client, reg_conf_tbl->reg_addr,
+				reg_conf_tbl->reg_data, reg_conf_tbl->dt);
+		}
+		else if (reg_conf_tbl->cmd_type == MSM_CAMERA_I2C_CMD_TRIM) {
+			rc = msm_camera_i2c_read(client, reg_conf_tbl->reg_addr, &reg_conf_tbl->reg_data, reg_conf_tbl->dt);
+			if(rc<0)
+				break;
+			reg_conf_tbl->reg_data +=2;
+			if(reg_conf_tbl->reg_data >7)
+				reg_conf_tbl->reg_data = 7;
+			rc = msm_camera_i2c_write(client, reg_conf_tbl->reg_addr, reg_conf_tbl->reg_data, reg_conf_tbl->dt);
+		}
 #endif
-			else {
+		else {
 				if (reg_conf_tbl->dt == 0)
 					dt = data_type;
 				else
@@ -538,19 +539,19 @@ int32_t msm_camera_i2c_write_tuner(struct msm_camera_i2c_client *client,
 	msm_camera_i2c_reg_tune_t *reg_conf_tbl, uint16_t size,
 	enum msm_camera_i2c_data_type data_type) 
 {
-	int i;
-	int32_t rc = -EFAULT;
-	printk("[CONFIG_PANTECH_CAMERA_TUNER]%s \n",__func__);
-	for (i = 0; i < size; i++) {
-		rc = msm_camera_i2c_write(
-			client,
-			reg_conf_tbl->reg_addr,
-			reg_conf_tbl->reg_data, data_type);
-		if (rc < 0)
-			break;
-		reg_conf_tbl++;
-	}
-	return rc;
+    int i;
+    int32_t rc = -EFAULT;
+printk("[CONFIG_PANTECH_CAMERA_TUNER]%s \n",__func__);        
+    for (i = 0; i < size; i++) {
+        rc = msm_camera_i2c_write(
+            client,
+            reg_conf_tbl->reg_addr,
+            reg_conf_tbl->reg_data, data_type);
+        if (rc < 0)
+            break;
+        reg_conf_tbl++;
+    }
+    return rc;
 }
 #endif
 
